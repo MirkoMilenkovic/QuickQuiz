@@ -19,6 +19,14 @@ namespace QuickQuiz.QuizLogic.Model
 
         private List<QuizQuestion> _questionList { get; } = new List<QuizQuestion>();
 
+        public IEnumerable<QuizQuestion> QuestionListReadOnly
+        {
+            get
+            {
+                return _questionList;
+            }
+        }
+
         private QuizQuestion? _activeQuestion { get; set; }
 
         public static Quiz Create(

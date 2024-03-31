@@ -2,6 +2,7 @@
 using QuickQuiz.QuestionLogic.Model;
 using QuickQuiz.QuizLogic.Commands.AnswerQuestion;
 using QuickQuiz.QuizLogic.Commands.CreateQuiz;
+using QuickQuiz.QuizLogic.Commands.GetAllQuestions;
 using QuickQuiz.QuizLogic.Commands.GetNextQuestion;
 
 namespace QuickQuiz.QuizLogic.Controllers
@@ -16,14 +17,18 @@ namespace QuickQuiz.QuizLogic.Controllers
 
         private AnswerQuestionCommandHandler _answerQuestionCommandHandler;
 
+        private GetAllQuestionsCommandHandler _getAllQuestionsCommandHandler;
+
         public QuizController(
             CreateQuizCommandHandler createQuizCommandHandler,
             GetNextQuestionCommandHandler getNextQuestionCommandHandler,
-            AnswerQuestionCommandHandler answerQuestionCommandHandler)
+            AnswerQuestionCommandHandler answerQuestionCommandHandler,
+            GetAllQuestionsCommandHandler getAllQuestionsCommandHandler)
         {
             _createQuizCommandHandler = createQuizCommandHandler;
             _getNextQuestionCommandHandler = getNextQuestionCommandHandler;
             _answerQuestionCommandHandler = answerQuestionCommandHandler;
+            _getAllQuestionsCommandHandler = getAllQuestionsCommandHandler;
         }
 
         [HttpPost(nameof(Create))]
@@ -71,6 +76,23 @@ namespace QuickQuiz.QuizLogic.Controllers
             Answer answer = _answerQuestionCommandHandler.Answer(answerQuestionCommand);
 
             return Ok(answer);
+        }
+
+        [HttpGet("GetAllQuestions/{quizId}")]
+        public IActionResult GetAllQuestions(string quizId)
+        {
+            if (String.IsNullOrWhiteSpace(quizId))
+            {
+                return BadRequest("stativa...");
+            }
+
+            GetAllQuestionsCommand cmd = new();
+            cmd.QuizId = quizId;
+
+            GetAllQuestionsResponse allQuestions = _getAllQuestionsCommandHandler.GetAll(
+                cmd);
+
+            return Ok(allQuestions);
         }
     }
 }

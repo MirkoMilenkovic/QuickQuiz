@@ -2,10 +2,10 @@
 {
     public class AnswerQuestionCommand
     {
-        public string QuizId { get; set; }
+        public string? QuizId { get; set; }
 
-        public string QuizQuestionId { get; set; }
+        public string? QuizQuestionId { get; set; }
 
-        public string AnswerId { get; set; }
+        public string? AnswerId { get; set; }
     }
 }

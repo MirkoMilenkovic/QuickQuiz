@@ -1,4 +1,6 @@
-﻿using QuickQuiz.QuizLogic.Model;
+﻿using QuickQuiz.QuizLogic.Commands.GetAllQuestions.DTO;
+using QuickQuiz.QuizLogic.Commands.GetNextQuestion.DTO;
+using QuickQuiz.QuizLogic.Model;
 
 namespace QuickQuiz.QuizLogic.Commands.GetNextQuestion
 {
@@ -11,7 +13,7 @@ namespace QuickQuiz.QuizLogic.Commands.GetNextQuestion
             _runningQuizes = runningQuizes;
         }
 
-        public QuizQuestion? GetNext(
+        public NextQuestionDTO? GetNext(
             GetNextQuestionCommand getNextQuestionCommand)
         {
             if(String.IsNullOrWhiteSpace(getNextQuestionCommand.QuizId))

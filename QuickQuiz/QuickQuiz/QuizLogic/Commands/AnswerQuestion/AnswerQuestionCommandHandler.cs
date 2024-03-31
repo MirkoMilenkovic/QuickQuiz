@@ -15,6 +15,13 @@ namespace QuickQuiz.QuizLogic.Commands.AnswerQuestion
 
         public Answer Answer(AnswerQuestionCommand command)
         {
+            if(string.IsNullOrWhiteSpace(command.AnswerId)
+                || string.IsNullOrWhiteSpace(command.QuizQuestionId)
+                || string.IsNullOrWhiteSpace(command.QuizId))
+            {
+                throw new Exception("stativa...");
+            }
+
             Quiz quiz = _runningQuizes.GetQuiz(
                 command.QuizId);
 

@@ -42,7 +42,6 @@ namespace QuickQuiz.QuizLogic.Model
             }
 
             // everything OK
-
             PlayersAnswer = playersAnswer;
 
             return PlayersAnswer;
