@@ -4,8 +4,11 @@
     {
         public Question(string text)
         {
+            QuestionId = Guid.NewGuid().ToString();
             Text = text;
         }
+
+        public string QuestionId { get; }
 
         public string Text { get; set; }
 

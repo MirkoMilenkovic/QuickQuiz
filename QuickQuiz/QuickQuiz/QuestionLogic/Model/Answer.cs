@@ -6,9 +6,12 @@
             string text,
             bool isCorrect)
         {
+            AnswerId = Guid.NewGuid().ToString();
             Text = text;
             IsCorrect = isCorrect;
         }
+
+        public string AnswerId { get; }
 
         public string Text { get; set; }
 

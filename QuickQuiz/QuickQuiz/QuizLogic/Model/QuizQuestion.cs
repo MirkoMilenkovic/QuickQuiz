@@ -8,9 +8,12 @@ namespace QuickQuiz.QuizLogic.Model
             Quiz quiz,
             Question originalQuestion)
         {
+            QuizQuestionId = Guid.NewGuid().ToString();
             Quiz = quiz;
             OriginalQuestion = originalQuestion;
         }
+
+        public string QuizQuestionId { get; }
 
         public Quiz Quiz { get; }
 
@@ -18,10 +21,31 @@ namespace QuickQuiz.QuizLogic.Model
 
         public QuestionLogic.Model.Answer? PlayersAnswer { get; private set; }
 
-        public void AnswerQuestion(
-            Answer answer)
+        public Answer AnswerQuestion(
+            string answerId)
         {
-            this.PlayersAnswer = answer;
+            Answer? playersAnswer = null;
+
+            // find Answer by AnswerId in OriginalQuestion
+            foreach (Answer answer in OriginalQuestion.Answers)
+            {
+                if (answer.AnswerId == answerId)
+                {
+                    playersAnswer = answer;
+                    break;
+                }
+            }
+
+            if (playersAnswer == null)
+            {
+                throw new Exception($"Can not find answerId: {answerId} in question: {QuizQuestionId}");
+            }
+
+            // everything OK
+
+            PlayersAnswer = playersAnswer;
+
+            return PlayersAnswer;
         }
     }
 }

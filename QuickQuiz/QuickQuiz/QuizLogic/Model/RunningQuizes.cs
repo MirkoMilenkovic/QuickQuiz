@@ -2,13 +2,25 @@
 {
     public class RunningQuizes
     {
-        private Dictionary<string, Quiz> QuizzesDict { get; set; } = new();
+        private Dictionary<string, Quiz> _quizzesDict { get; set; } = new();
 
         public void AddQuiz(Quiz quiz)
         {
-            this.QuizzesDict.Add(
-                quiz.Id, 
+            this._quizzesDict.Add(
+                quiz.QuizId, 
                 quiz);
+        }
+
+        public Quiz GetQuiz(string quizId)
+        {
+            _quizzesDict.TryGetValue(quizId, out var quiz);
+
+            if(quiz == null)
+            {
+                throw new Exception($"Quiz {quizId} not found");
+            }
+
+            return quiz;
         }
     }
 }
