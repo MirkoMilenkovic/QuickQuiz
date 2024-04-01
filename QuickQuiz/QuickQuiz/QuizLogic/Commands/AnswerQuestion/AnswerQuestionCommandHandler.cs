@@ -1,4 +1,5 @@
 ﻿using QuickQuiz.QuestionLogic.Model;
+using QuickQuiz.QuizLogic.Commands.AnswerQuestion.DTO;
 using QuickQuiz.QuizLogic.Model;
 
 namespace QuickQuiz.QuizLogic.Commands.AnswerQuestion
@@ -13,9 +14,9 @@ namespace QuickQuiz.QuizLogic.Commands.AnswerQuestion
             _runningQuizes = runningQuizes;
         }
 
-        public Answer Answer(AnswerQuestionCommand command)
+        public PlayersAnswerDTO Answer(AnswerQuestionCommand command)
         {
-            if(string.IsNullOrWhiteSpace(command.AnswerId)
+            if (string.IsNullOrWhiteSpace(command.AnswerId)
                 || string.IsNullOrWhiteSpace(command.QuizQuestionId)
                 || string.IsNullOrWhiteSpace(command.QuizId))
             {
@@ -29,7 +30,14 @@ namespace QuickQuiz.QuizLogic.Commands.AnswerQuestion
                 command.QuizQuestionId,
                 command.AnswerId);
 
-            return playersAnswer;
+            PlayersAnswerDTO playersAnswerDTO = new PlayersAnswerDTO()
+            {
+                AnswerId = playersAnswer.AnswerId,
+                Text = playersAnswer.Text,
+                IsCorrect = playersAnswer.IsCorrect
+            };
+
+            return playersAnswerDTO;
         }
     }
 }

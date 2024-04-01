@@ -28,9 +28,9 @@ namespace QuickQuiz.QuizLogic.Commands.GetAllQuestions
             GetAllQuestionsResponse response = new GetAllQuestionsResponse(
                 quiz.QuizId);
 
-            foreach (var q in questionList)
+            foreach (QuizQuestion q in questionList)
             {
-                AnswerDTO answerDTO = null;
+                AnswerDTO? answerDTO = null;
                 if (q.PlayersAnswer != null)
                 {
                     answerDTO = new AnswerDTO()
@@ -39,6 +39,7 @@ namespace QuickQuiz.QuizLogic.Commands.GetAllQuestions
                         Text = q.PlayersAnswer.Text
                     };
                 }
+
                 QuestionDTO questionDTO = new QuestionDTO()
                 {
                     QuizQuestionId = q.QuizQuestionId,

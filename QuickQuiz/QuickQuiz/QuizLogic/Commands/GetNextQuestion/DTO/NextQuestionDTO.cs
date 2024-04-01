@@ -8,5 +8,7 @@
         public required string QuizQuestionId { get; init; }
 
         public required string Text { get; init; }
+
+        public List<AnswerDTO> Answers { get; } = new List<AnswerDTO>();
     }
 }

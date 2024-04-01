@@ -1,4 +1,4 @@
-﻿using QuickQuiz.QuizLogic.Commands.GetAllQuestions.DTO;
+﻿using QuickQuiz.QuestionLogic.Model;
 using QuickQuiz.QuizLogic.Commands.GetNextQuestion.DTO;
 using QuickQuiz.QuizLogic.Model;
 
@@ -16,7 +16,7 @@ namespace QuickQuiz.QuizLogic.Commands.GetNextQuestion
         public NextQuestionDTO? GetNext(
             GetNextQuestionCommand getNextQuestionCommand)
         {
-            if(String.IsNullOrWhiteSpace(getNextQuestionCommand.QuizId))
+            if (String.IsNullOrWhiteSpace(getNextQuestionCommand.QuizId))
             {
                 throw new Exception("QuizId is empty");
             }
@@ -26,7 +26,30 @@ namespace QuickQuiz.QuizLogic.Commands.GetNextQuestion
 
             QuizQuestion? nextQuestion = quiz.GetNextQuestion();
 
-            return nextQuestion;
+            if(nextQuestion == null)
+            {
+
+                return null;
+            }
+
+            NextQuestionDTO nextQuestionDTO = new NextQuestionDTO()
+            {
+                QuizQuestionId = nextQuestion.QuizQuestionId,
+                Text = nextQuestion.OriginalQuestion.Text
+            };
+
+            foreach (Answer answer in nextQuestion.OriginalQuestion.Answers)
+            {
+                AnswerDTO answerDTO = new AnswerDTO()
+                {
+                    AnswerId = answer.AnswerId,
+                    Text = answer.Text
+                };
+
+                nextQuestionDTO.Answers.Add(answerDTO);
+            }
+
+            return nextQuestionDTO;
         }
     }
 }

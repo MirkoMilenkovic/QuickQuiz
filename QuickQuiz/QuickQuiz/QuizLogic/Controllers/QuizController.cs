@@ -4,6 +4,7 @@ using QuickQuiz.QuizLogic.Commands.AnswerQuestion;
 using QuickQuiz.QuizLogic.Commands.CreateQuiz;
 using QuickQuiz.QuizLogic.Commands.GetAllQuestions;
 using QuickQuiz.QuizLogic.Commands.GetNextQuestion;
+using QuickQuiz.QuizLogic.Commands.GetNextQuestion.DTO;
 
 namespace QuickQuiz.QuizLogic.Controllers
 {
@@ -56,10 +57,16 @@ namespace QuickQuiz.QuizLogic.Controllers
             GetNextQuestionCommand cmd = new();
             cmd.QuizId = quizId;
 
-            var nextQuestion = _getNextQuestionCommandHandler.GetNext(
+            NextQuestionDTO? nextQuestionDTO = _getNextQuestionCommandHandler.GetNext(
                 cmd);
 
-            return Ok(nextQuestion);
+            if (nextQuestionDTO == null)
+            {
+                // no nextQuestion, quiz is completed
+                return NotFound();
+            }
+
+            return Ok(nextQuestionDTO);
         }
 
         [HttpPost(nameof(Answer))]
@@ -73,9 +80,9 @@ namespace QuickQuiz.QuizLogic.Controllers
                 return BadRequest("stativa...");
             }
 
-            Answer answer = _answerQuestionCommandHandler.Answer(answerQuestionCommand);
+            Commands.AnswerQuestion.DTO.PlayersAnswerDTO playersAnswerDTO = _answerQuestionCommandHandler.Answer(answerQuestionCommand);
 
-            return Ok(answer);
+            return Ok(playersAnswerDTO);
         }
 
         [HttpGet("GetAllQuestions/{quizId}")]
