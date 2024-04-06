@@ -29,6 +29,8 @@ namespace QuickQuiz.QuizLogic.Model
 
         private QuizQuestion? _activeQuestion { get; set; }
 
+        public decimal? ScorePercentage { get; private set; }
+
         public static Quiz Create(
             string playerName,
             IEnumerable<Question> allQuestions)
@@ -48,6 +50,11 @@ namespace QuickQuiz.QuizLogic.Model
                         question);
 
                     runningQuiz._questionList.Add(qq);
+
+                    if(runningQuiz._questionList.Count >= 2)
+                    {
+                        break;
+                    }
                 }
 
                 Random rnd = new Random();
@@ -122,6 +129,30 @@ namespace QuickQuiz.QuizLogic.Model
                 answerId);
 
             return playersAnswer;
+        }
+
+        public IEnumerable<QuizQuestion> Complete()
+        {
+            if (_activeQuestion != null)
+            {
+                throw new QuizNotCompleteException($"{QuizId} has active question, therefore it can not be completed");
+            }
+
+            int totalQuestionCount = _questionList.Count;
+            int correctAnswerCount = 0;
+
+            foreach (QuizQuestion qq in _questionList)
+            {
+                if (qq.PlayersAnswer!.IsCorrect)
+                {
+                    correctAnswerCount++;
+                }
+            }
+
+            // note cast to decimal
+            ScorePercentage = ((decimal)correctAnswerCount)/ totalQuestionCount;
+
+            return _questionList;
         }
     }
 }

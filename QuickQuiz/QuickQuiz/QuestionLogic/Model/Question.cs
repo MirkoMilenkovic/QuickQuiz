@@ -19,8 +19,6 @@
         {
             // TODO
             // Validate that only one is correct
-
-
             Answers.Add(answer);
         }
 
