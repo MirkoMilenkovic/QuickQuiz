@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QuickQuiz.QuestionLogic.Model;
 using QuickQuiz.QuizLogic.Commands.AnswerQuestion;
+using QuickQuiz.QuizLogic.Commands.CompleteQuiz;
 using QuickQuiz.QuizLogic.Commands.CreateQuiz;
 using QuickQuiz.QuizLogic.Commands.GetAllQuestions;
 using QuickQuiz.QuizLogic.Commands.GetNextQuestion;
@@ -20,16 +21,20 @@ namespace QuickQuiz.QuizLogic.Controllers
 
         private GetAllQuestionsCommandHandler _getAllQuestionsCommandHandler;
 
+        private CompleteQuizCommandHandler _completeQuizCommandHandler;
+
         public QuizController(
             CreateQuizCommandHandler createQuizCommandHandler,
             GetNextQuestionCommandHandler getNextQuestionCommandHandler,
             AnswerQuestionCommandHandler answerQuestionCommandHandler,
-            GetAllQuestionsCommandHandler getAllQuestionsCommandHandler)
+            GetAllQuestionsCommandHandler getAllQuestionsCommandHandler,
+            CompleteQuizCommandHandler completeQuizCommandHandler)
         {
             _createQuizCommandHandler = createQuizCommandHandler;
             _getNextQuestionCommandHandler = getNextQuestionCommandHandler;
             _answerQuestionCommandHandler = answerQuestionCommandHandler;
             _getAllQuestionsCommandHandler = getAllQuestionsCommandHandler;
+            _completeQuizCommandHandler = completeQuizCommandHandler;
         }
 
         [HttpPost(nameof(Create))]
@@ -100,6 +105,20 @@ namespace QuickQuiz.QuizLogic.Controllers
                 cmd);
 
             return Ok(allQuestions);
+        }
+
+        [HttpPost(nameof(Complete))]
+        public IActionResult Complete([FromBody] CompleteQuizCommand completeQuizCommand)
+        {
+            if (completeQuizCommand == null
+                      || String.IsNullOrWhiteSpace(completeQuizCommand.QuizId))
+            {
+                return BadRequest("stativa...");
+            }
+
+            var quizResultDTO = _completeQuizCommandHandler.Complete(completeQuizCommand);
+
+            return Ok(quizResultDTO);
         }
     }
 }

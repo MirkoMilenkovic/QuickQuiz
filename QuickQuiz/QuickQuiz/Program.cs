@@ -1,6 +1,7 @@
 
 using QuickQuiz.DB;
 using QuickQuiz.QuizLogic.Commands.AnswerQuestion;
+using QuickQuiz.QuizLogic.Commands.CompleteQuiz;
 using QuickQuiz.QuizLogic.Commands.CreateQuiz;
 using QuickQuiz.QuizLogic.Commands.GetAllQuestions;
 using QuickQuiz.QuizLogic.Commands.GetNextQuestion;
@@ -22,6 +23,7 @@ namespace QuickQuiz
             builder.Services.AddSingleton<GetNextQuestionCommandHandler>();
             builder.Services.AddSingleton<AnswerQuestionCommandHandler>();
             builder.Services.AddSingleton<GetAllQuestionsCommandHandler>();
+            builder.Services.AddSingleton<CompleteQuizCommandHandler>();
 
             builder.Services.AddSingleton<RunningQuizes>();
 
